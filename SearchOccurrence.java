@@ -18,19 +18,17 @@ public class SearchOccurrence {
             if (i == 10) {
                 for(int j = 0; j < times; j++) {
                     for(int k = 0; k < test.length(); k++) {
-                        Node x = new Node(i, test.charAt(k));
-                        queue.enqueue(x);
+                        queue.enqueue(test.charAt(k));
                         i++;
                     }
                 }
             } else {
                 c = (char) (r.nextInt(26) + 'A');
-                Node x = new Node(i, c);
-                queue.enqueue(x);
+                queue.enqueue(c);
             }
         }
 
-        queue.print();
+        System.out.println(queue);
         queue.searchOccurrence(test);
     }
 }

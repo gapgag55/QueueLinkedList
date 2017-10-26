@@ -1,103 +1,69 @@
 public class Queue {
+	
+	private class Node {
+		private char data;
+		private Node next;
+		public Node(char data) {
+			this.data = data;
+			next = null;
+		}
+		public Node getNext() {return this.next;}
+		public void setNext(Node next) {this.next = next;}
+		public char getChar() {return this.data;}
+	}
 
-    Node first;
+    private Node head,tail;
 
     public Queue() {
-        first = null;
+        head = tail = null;
     }
 
-    public void enqueue(Node x) {
-        Node T;
-        if (first == null) {
-            first = x;
-        }  else {
-            T = first;
-            while(T.next != null ) {
-                T = T.next;
-            }
-            T.next = x;
+    public void enqueue(char ch) {
+        if(head == null)
+        	head = tail = new Node(ch);
+        else {
+        	tail.setNext(new Node(ch));
+        	tail = tail.getNext();
         }
     }
 
     public void dequeue() {
-        if (first != null) {
-            first = first.next;
-        }
+        if(head != null)
+        	head = head.getNext();
     }
 
     // HELPER METHOD
-    public void print() {
-        Node T;
-        T = first;
-
-        while(T != null) {
-            System.out.print(T.character + " ");
-            T = T.next;
-        }
+    public String toString() {
+    	StringBuilder sb = new StringBuilder();
+    	Node node = head;
+    	while(node != null) {
+    		sb.append(node.getChar());
+    		node = node.getNext();
+    		if(node != null) sb.append(' ');
+    	}
+    	return sb.toString();
     }
-
+    
     // IMPLEMENT OCCURRENCE
     public void searchOccurrence(String word) {
-        Node T; // Current
-        Node B; // Previous
-        int i = 0, occurs = 0;
-        T = first;
-        B = first;
-
-        /*
-         * IN CASE: "P"
-         * WHEN WORD IS SINGLE CHARACTER
-         */
-        if (word.length() > 1) {
-
-            /*
-             * LOOP CHARACTER IN LINKED LIST
-             */
-            while (T != null) {
-
-                /*
-                 * LOOP CHARACTER FROM WORD PARAMETER
-                 */
-                if (i < word.length() - 1) {
-
-                    /*
-                     * CHECK WHETHER LINK LIST CHARACTER
-                     * MATCHES WITH WORD ARGUMENT
-                     *
-                     * IF SO, INCREMENT i
-                     * AND PREPARE FOR CHECKING NEXT CHARACTER
-                     */
-                    if (T.character != word.charAt(i)) {
-                        i = 0;
-                    } else {
-                        i++;
-                    }
-
-                } else {
-                    /*
-                     * IF, i MORE THAN WORD LENGTH
-                     * IT MEANS WE ARE FOUND THE WORD(S)
-                     */
-                    occurs += 1;
-                    i = 0;
-
-                    /* SET TO PREVIOUS CHARACTER IF WORD LENGTH > 2,
-                     * SECURITY CHECKING
-                     * BECAUSE USERS CAN FIND ONLY A SINGLE CHARACTER
-                     */
-                    if (word.length() > 2) {
-                        T = B;
-                        continue;
-                    }
-                }
-
-                B = T;
-                T = T.next;
-            }
-        } else {
-            occurs += 1;
-        }
-
-        System.out.println("\n" + word + " has occurred: " + occurs + " time(s)");
+    	Node first = head,current = first;
+    	int i = 0,n = 0;
+    	
+    	while(current != null) {
+    		if(word.charAt(i) == current.getChar()) {
+    			i++;
+    			current = current.getNext();
+    		}
+    		else {
+    			i = 0;
+    			current = first = first.getNext();
+    		}
+    		if(i == word.length()) {
+    			n++;
+    			i = 0;
+    			current = first = first.getNext();
+    		}
+    	}
+    	System.out.println("\n" + word + " has occurred: " + n + " time(s)");
     }
 }
